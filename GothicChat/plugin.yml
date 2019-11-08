@@ -1,0 +1,62 @@
+name: GothicChat
+main: com.loncha.gothicchat.Main
+version: 1.0
+commands:
+   hablar:
+      description: Utiliza el canal de hablar.
+      usage: /hablar
+      aliases: [h]
+   gritar:
+      description: Utiliza el canal de gritar.
+      usage: /gritar
+      aliases: [g]
+   susurrar:
+      description: Utiliza el canal de susurrar.
+      usage: /susurrar
+      aliases: [s]
+   bajo:
+      description: Utiliza el canal de hablar bajo.
+      usage: /bajo
+      aliases: [b]
+   ooc:
+      description: Utiliza el canal OOC.
+      usage: /ooc
+   gooc:
+      description: Utiliza el canal GOOC.
+      usage: /gooc
+   staff:
+      description: Utiliza el canal de staff.
+      usage: /staff
+   me:
+      description: Utiliza el canal de acciones.
+      usage: /me <message>
+   do:
+      description: Utiliza el canal de rol de entorno.
+      usage: /do <message>
+   duda:
+      description: Utiliza el canal de dudas.
+      usage: /duda <message>
+   evento:
+      description: Utiliza el canal de eventos.
+      usage: /evento
+   intentar:
+      description: Utiliza el comando intentar.
+      usage: /intentar
+   dados:
+      description: Utiliza el comando de dados.
+      usage: /dados
+   cuentaatras:
+      description: Hace una cuenta atras, por defecto desde 10.
+      usage: /cuentaatras <tiempo>
+   ficha:
+      description: Abre el inventario de ficha.
+      usage: /ficha
+   ayuda:
+      description: Muetra los comandos del plugin.
+      usage: /ayuda
+   sumarpuntos:
+      description: Suma puntos de rol a un jugador.
+      usage: /sumarpuntos <user> <puntos>
+   restarpuntos:
+      description: Resta puntos de rol a un jugador.
+      usage: /restarpuntos <user> <puntos>
