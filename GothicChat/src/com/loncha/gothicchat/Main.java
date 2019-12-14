@@ -40,9 +40,10 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 public class Main extends JavaPlugin implements Listener {
 	//Variables (listas, hashmap, etc...)
+	public static boolean estadoOOC = true; 
 	
 	//Lista de comandos
-	String[] chatTypes = {"hablar", "bajo", "susurrar", "gritar", "ooc", "gooc", "staff", "me", "do", "evento", "intentar", "dados", "cuentaatras","ficha","duda","ayuda","sumarpuntos","restarpuntos"};
+	String[] chatTypes = {"hablar", "bajo", "susurrar", "gritar", "ooc", "gooc", "staff", "me", "do", "evento", "intentar", "dados", "apagarooc","ficha","duda","ayuda","sumarpuntos","restarpuntos"};
 	
 	//Arrays para el comando /ayuda
 	String[] ayudaUser = {"/hablar, /h - Canal IC para hablar", "/bajo, /b - Canal IC para hablar bajo", "/susurrar, /s - Canal IC para susurrar", "/gritar, /g - Canal IC para gritar", "/me - Canal IC para acciones", "/do - Canal IC para rol de entorno", "/intentar - Comando de intentar acción", "/dados - Comando para tirar dados", "/duda - Comando para pedir ayuda al staff", "/ooc - Comando para hablar OOC", "/gooc - Comando para gritar OOC"};
@@ -169,7 +170,7 @@ public class Main extends JavaPlugin implements Listener {
 			if (cmd.getName().equalsIgnoreCase(chatTypes[i])) {
 				
 				//CANAL DE STAFF
-				if (cmd.getName().equalsIgnoreCase("staff") && sender.isOp()) {
+				if (cmd.getName().equalsIgnoreCase("staff") && sender.hasPermission("gchat.admin")) {
 					if (sender instanceof Player) {
 						Player p = (Player)sender;
 						actualChat.put(p, i);
@@ -177,7 +178,7 @@ public class Main extends JavaPlugin implements Listener {
 					}
 				}
 				
-				else if (cmd.getName().equalsIgnoreCase("staff") && sender.isOp()){ 
+				else if (cmd.getName().equalsIgnoreCase("staff") && !sender.hasPermission("gchat.admin")){ 
 					sender.sendMessage(ChatColor.RED + "Este canal es solo para administradores");
 				}
 				
@@ -273,7 +274,7 @@ public class Main extends JavaPlugin implements Listener {
 					else {
 						String rawAction = "";
 						for (int k = 0; k < args.length; k++) {
-							if (sender.isOp()) {
+							if (sender.hasPermission("gchat.admin")) {
 								if (args[0].equalsIgnoreCase("ver")) {
 									if (listaDudas.size() > 0) {
 										for(int l = 0; l < listaDudas.size(); l++) {
@@ -378,9 +379,13 @@ public class Main extends JavaPlugin implements Listener {
 					
 				}
 				
-				//COMANDO DE CUENTA ATRÁS
-				else if (cmd.getName().equalsIgnoreCase("cuentaatras")){
-
+				else if (cmd.getName().equalsIgnoreCase("apagarooc")) {
+					Player p = (Player) sender;
+					
+					if (p.hasPermission("gchat.admin")) {
+						estadoOOC = !estadoOOC;
+						p.sendMessage("El OOC está: " + estadoOOC);
+					}
 				}
 				
 				//COMANDO DE /AYUDA
@@ -388,7 +393,7 @@ public class Main extends JavaPlugin implements Listener {
 					Player j = (Player) sender; //Castea el sender a player
 					
 					//Comprueba si el sender es admin o no (si es admin mostrará unos comandos, y si no lo está mostrará otros)
-					if (j.isOp()) {
+					if (j.hasPermission("gchat.admin")) {
 						for (int k = 0; k < ayudaAdmin.length; k++) {
 							j.sendMessage(ChatColor.AQUA + ayudaAdmin[k]);
 						}
@@ -411,7 +416,7 @@ public class Main extends JavaPlugin implements Listener {
 						}
 					} else {
 						if (args[0].equalsIgnoreCase("reset")) {
-							if (p.isOp()) {
+							if (p.hasPermission("gchat.admin")) {
 								fichaCompletada.put(Bukkit.getServer().getPlayer(args[1]),false);
 								datosFicha.put(Bukkit.getServer().getPlayer(args[1]), new String[] {"","","","",""});
 								p.sendMessage("Ficha del jugador "+ args[1] + " reseteada");
@@ -459,7 +464,7 @@ public class Main extends JavaPlugin implements Listener {
 				else if (cmd.getName().equalsIgnoreCase("sumarpuntos")) {
 					Player p = (Player) sender;
 					
-					if (p.isOp()) {
+					if (p.hasPermission("gchat.admin")) {
 						if (args.length < 2) {
 							p.sendMessage("Uso: /sumarpuntos <usuario> <puntos>");
 						} else {
@@ -491,7 +496,7 @@ public class Main extends JavaPlugin implements Listener {
 				else if (cmd.getName().equalsIgnoreCase("restarpuntos")) {
 					Player p = (Player) sender;
 					
-					if (p.isOp()) {
+					if (p.hasPermission("gchat.admin")) {
 						if (args.length < 2) {
 							p.sendMessage("Uso: /restarpuntos <usuario> <puntos>");
 						} else {
@@ -520,21 +525,22 @@ public class Main extends JavaPlugin implements Listener {
 				}
 								
 				//RESTO DE CANALES DEL CHAT	
-				else if (!cmd.getName().equalsIgnoreCase("staff")) {
+				else if (!cmd.getName().equalsIgnoreCase("staff") && !cmd.getName().equalsIgnoreCase("apagarooc")) {
 					Player p = (Player) sender;
 					if (sender instanceof Player) {
 						actualChat.put(p, i);
 					
-						if (actualChat.get(p) != 7 && actualChat.get(p) != 8) {
+						if (actualChat.get(p) != 7 && actualChat.get(p) != 8 && actualChat.get(p) != 13) {
 							sender.sendMessage("Ahora estás hablando por el canal " + colores[actualChat.get(p)+1] + chatTypes[actualChat.get(p)]);
 						}
 					}
 				}
 				
+				
+				
 				return true;
 			}			
 		}
-
 		return false;
 	}
 	
@@ -618,7 +624,7 @@ public class Main extends JavaPlugin implements Listener {
 			
 			//Canal de administración (entre mundos, sin límite de distancia)
 			if (actualChat.get(player) == 6) {
-				if (p.isOp()) {
+				if (p.hasPermission("gchat.admin")) {
 					p.sendMessage(message);
 				}
 			}
@@ -666,7 +672,15 @@ public class Main extends JavaPlugin implements Listener {
 				if (p.getWorld().equals(player.getWorld())) {
 					if (p.getLocation().distance(playerLocation) <= canalDistancias[actualChat.get(player)]) {
 						if (actualChat.get(player) != 7 && actualChat.get(player) != 8 && actualChat.get(player) != 10 && actualChat.get(player) != 11) {
-							p.sendMessage(message);
+							if (actualChat.get(player) == 4) {
+								if (estadoOOC) {
+									p.sendMessage(message);
+								} else {
+									p.sendMessage("El OOC está desactivado");
+								}
+							} else {
+								p.sendMessage(message);
+							}
 						}
 					}
 				}

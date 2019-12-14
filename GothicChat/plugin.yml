@@ -60,3 +60,10 @@ commands:
    restarpuntos:
       description: Resta puntos de rol a un jugador.
       usage: /restarpuntos <user> <puntos>
+   apagarooc:
+      description: Enciende o apaga el canal OOC.
+      usage: /apagarooc
+permissions:
+   gchat.admin:
+      description: Permisos de admin para el chat.
+      default: op
