@@ -2,6 +2,8 @@ package com.loncha.gothicchat;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.bringholm.nametagchanger.NameTagChanger;
+
 import net.md_5.bungee.api.ChatColor;
 
 import java.io.BufferedReader;
@@ -13,7 +15,10 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -110,6 +115,7 @@ public class Main extends JavaPlugin implements Listener {
 		
 		if (datosFicha.get(p)[0] != "") {
 			p.setDisplayName(datosFicha.get(p)[0]);
+			
 		}
 		
 		
@@ -240,7 +246,7 @@ public class Main extends JavaPlugin implements Listener {
 						
 						Player j = (Player) sender; //Castea el sender a player
 						List<Entity> entities = j.getNearbyEntities(20, 20, 20); //Crea una lista de entidades con todas las entidades en un radio de 20 bloques a partir del jugador
-						String message = message = colores[6] + j.getDisplayName() + " " + rawAction; //Formatea el mensaje
+						String message = message = colores[6] + " " + rawAction; //Formatea el mensaje
 						
 						//Itera por todas las entidades de la lista y comprueba si están en rango, si lo están les envía el mensaje
 						for(Entity e: entities) {
