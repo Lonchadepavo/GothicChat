@@ -148,6 +148,7 @@ public class Main extends JavaPlugin implements Listener {
 		
 	}
 	
+	//Método para comprobar la ficha de personaje de un jugador
 	public void checkFicha(Player p) {
 		try {
 			
