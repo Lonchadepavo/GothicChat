@@ -64,7 +64,7 @@ public class Main extends JavaPlugin implements Listener {
 	HashMap<Player, Integer> actualChat = new HashMap<Player, Integer>();
 	
 	//Datos de la ficha de personaje
-	HashMap<Player, String[]> datosFicha = new HashMap<Player, String[]>();
+	public static HashMap<Player, String[]> datosFicha = new HashMap<Player, String[]>();
 	HashMap<Player, Boolean> fichaCompletada = new HashMap<Player, Boolean>();
 	String[] arrDatosFicha = new String[6];
 	
